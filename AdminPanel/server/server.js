@@ -91,6 +91,6 @@ app.use('/categories', categoryRouter);
 app.use('/menu', menuRouter);
 app.use('/orders', orderRouter);
 
-app.listen(5000, () => {
-    console.log("Server running on port 5000");
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
