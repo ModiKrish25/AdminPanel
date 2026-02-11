@@ -1,6 +1,6 @@
-import { BASE_URL } from './apiConfig';
+import axios from 'axios';
 
-const API_URL = `${BASE_URL}/orders`;
+const API_URL = 'http://127.0.0.1:5000/orders';
 
 export const getDashboardData = async () => {
     const response = await axios.get(`${API_URL}/dashboard-data`);

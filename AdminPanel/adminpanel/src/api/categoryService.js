@@ -1,6 +1,6 @@
-import { BASE_URL } from './apiConfig';
+import axios from 'axios';
 
-const API_URL = `${BASE_URL}/categories`;
+const API_URL = 'http://127.0.0.1:5000/categories';
 
 export const getAllCategories = async () => {
     const response = await axios.get(API_URL);
