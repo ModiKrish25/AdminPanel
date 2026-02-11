@@ -82,9 +82,13 @@ const seedData = async () => {
 };
 
 // Connect and Seed
-connection().then(() => {
-    seedData();
-});
+connection()
+    .then(() => {
+        seedData();
+    })
+    .catch((err) => {
+        console.error("Critical: Could not start seeding because database connection failed.");
+    });
 
 app.use('/users', router);
 app.use('/categories', categoryRouter);
