@@ -111,10 +111,8 @@ const PORT = process.env.PORT || 5000;
 app.use(ex.static(path.join(__dirname, '../adminpanel/dist')));
 
 // Handle React routing, return all requests to React app
-app.get('/:path*', (req, res) => {
-    if (!req.path.startsWith('/api')) {
-        res.sendFile(path.join(__dirname, '../adminpanel/dist', 'index.html'));
-    }
+app.use((req, res) => {
+    res.sendFile(path.join(__dirname, '../adminpanel/dist', 'index.html'));
 });
 
 app.listen(PORT, () => {
