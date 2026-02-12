@@ -1,0 +1,9 @@
+{
+    "name": "admin-panel-root",
+    "version": "1.0.0",
+    "scripts": {
+        "install-all": "npm install && cd adminpanel && npm install && cd ../server && npm install",
+        "build": "cd adminpanel && npm install && npm run build",
+        "start": "cd server && npm start"
+    }
+}

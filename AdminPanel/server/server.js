@@ -1,4 +1,5 @@
 let ex = require('express');
+let path = require('path');
 let cors = require('cors');
 let app = ex();
 let connection = require('./DB/db');
@@ -87,15 +88,37 @@ connection()
         seedData();
     })
     .catch((err) => {
-        console.error("Critical: Could not start seeding because database connection failed.");
+        console.error("Critical: Could not start seeding because database connection failed:", err.message);
     });
 
+const apiRouter = ex.Router();
+apiRouter.use('/users', router);
+apiRouter.use('/categories', categoryRouter);
+apiRouter.use('/menu', menuRouter);
+apiRouter.use('/orders', orderRouter);
+
+app.use('/api', apiRouter);
+
+// Fallback for local dev if not using /api
 app.use('/users', router);
 app.use('/categories', categoryRouter);
 app.use('/menu', menuRouter);
 app.use('/orders', orderRouter);
 
 const PORT = process.env.PORT || 5000;
+
+// Serve static files from the React app
+app.use(ex.static(path.join(__dirname, '../adminpanel/dist')));
+
+// Handle React routing, return all requests to React app
+app.get('*', (req, res) => {
+    if (!req.path.startsWith('/api')) {
+        res.sendFile(path.join(__dirname, '../adminpanel/dist', 'index.html'));
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+module.exports = app;

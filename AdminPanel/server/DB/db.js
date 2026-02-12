@@ -2,16 +2,27 @@ const mongoose = require('mongoose');
 
 const connection = async () => {
     try {
+        const mongoUri = process.env.MONGO_URI;
+
+        if (!mongoUri) {
+            console.error("ERROR: MONGO_URI is not defined in the environment variables!");
+            console.info("Defaulting to local URI, but this will likely fail on Render.");
+        }
+
         console.log("Attempting to connect to MongoDB...");
-        const mongoUri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/adminpanel";
+        const targetUri = mongoUri || "mongodb://127.0.0.1:27017/adminpanel";
 
-        // Options to help with debugging and stability
-        await mongoose.connect(mongoUri);
+        // Disable buffering so we see errors immediately inside operations
+        mongoose.set('bufferCommands', false);
 
-        console.log("Database connected successfully");
+        await mongoose.connect(targetUri, {
+            serverSelectionTimeoutMS: 5000, // Fail fast if can't connect
+        });
+
+        console.log("Database connected successfully. Connection State:", mongoose.connection.readyState);
     } catch (error) {
-        console.error("Database connection failed:", error.message);
-        throw error; // Propagate the error so the server knows connection failed
+        console.error("DATABASE CONNECTION ERROR:", error.message);
+        throw error;
     }
 }
 
