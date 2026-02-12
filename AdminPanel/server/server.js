@@ -99,12 +99,6 @@ apiRouter.use('/orders', orderRouter);
 
 app.use('/api', apiRouter);
 
-// Fallback for local dev if not using /api
-app.use('/users', router);
-app.use('/categories', categoryRouter);
-app.use('/menu', menuRouter);
-app.use('/orders', orderRouter);
-
 const PORT = process.env.PORT || 5000;
 
 // Serve static files from the React app

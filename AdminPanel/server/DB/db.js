@@ -12,12 +12,10 @@ const connection = async () => {
         console.log("Attempting to connect to MongoDB...");
         const targetUri = mongoUri || "mongodb://127.0.0.1:27017/adminpanel";
 
-        // Disable buffering so we see errors immediately inside operations
-        mongoose.set('bufferCommands', false);
+        // Enable buffering so operations wait for the connection instead of crashing
+        mongoose.set('bufferCommands', true);
 
-        await mongoose.connect(targetUri, {
-            serverSelectionTimeoutMS: 5000, // Fail fast if can't connect
-        });
+        await mongoose.connect(targetUri);
 
         console.log("Database connected successfully. Connection State:", mongoose.connection.readyState);
     } catch (error) {
