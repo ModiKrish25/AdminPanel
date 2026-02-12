@@ -101,12 +101,9 @@ app.use('/api', apiRouter);
 
 const PORT = process.env.PORT || 5000;
 
-// Serve static files from the React app
-app.use(ex.static(path.join(__dirname, '../adminpanel/dist')));
-
-// Handle React routing, return all requests to React app
-app.use((req, res) => {
-    res.sendFile(path.join(__dirname, '../adminpanel/dist', 'index.html'));
+// Backend Welcome Route
+app.get('/', (req, res) => {
+    res.send('<h1>AdminPanel Backend is Running!</h1><p>The API is available at /api</p>');
 });
 
 app.listen(PORT, () => {

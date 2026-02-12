@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "scripts": {
         "install-all": "npm install && cd AdminPanel/adminpanel && npm install && cd ../server && npm install",
-        "build": "cd AdminPanel/server && npm install && cd ../adminpanel && npm install --include=dev && npm run build",
-        "start": "cd AdminPanel/server && npm start"
+        "build": "cd AdminPanel/server && npm install",
+        "start": "cd AdminPanel/server && node server.js"
     }
 }
