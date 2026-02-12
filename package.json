@@ -1,0 +1,9 @@
+{
+    "name": "admin-panel-repo-root",
+    "version": "1.0.0",
+    "scripts": {
+        "install-all": "npm install && cd AdminPanel/adminpanel && npm install && cd ../server && npm install",
+        "build": "cd AdminPanel/adminpanel && npm install && npm run build",
+        "start": "cd AdminPanel/server && npm start"
+    }
+}
