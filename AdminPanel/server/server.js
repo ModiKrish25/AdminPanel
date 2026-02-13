@@ -1,3 +1,4 @@
+require('dotenv').config();
 let ex = require('express');
 let path = require('path');
 let cors = require('cors');
