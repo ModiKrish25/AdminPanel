@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import * as orderService from './api/orderService';
 
 const OrdersPage = () => {
     const [orders, setOrders] = useState([]);
@@ -7,9 +7,9 @@ const OrdersPage = () => {
 
     const fetchOrders = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/orders/all');
-            if (response.data.success) {
-                setOrders(response.data.orders);
+            const data = await orderService.getAllOrders();
+            if (data.success) {
+                setOrders(data.orders);
             }
         } catch (error) {
             console.error("Error fetching orders:", error);
@@ -24,8 +24,8 @@ const OrdersPage = () => {
 
     const updateStatus = async (orderId, newStatus) => {
         try {
-            const response = await axios.put(`http://localhost:5000/orders/update/${orderId}`, { status: newStatus });
-            if (response.data.success) {
+            const data = await orderService.updateOrderStatus(orderId, newStatus);
+            if (data.success) {
                 fetchOrders();
             }
         } catch (error) {
@@ -94,8 +94,8 @@ const OrdersPage = () => {
                                     </div>
                                     <div className="space-y-2">
                                         <span className={`inline-flex px-4 py-1.5 rounded-2xl text-[10px] font-black uppercase tracking-widest ${order.status === 'Completed' ? 'bg-emerald-500 text-white' :
-                                                order.status === 'Cancelled' ? 'bg-rose-500 text-white' :
-                                                    order.status === 'Preparing' ? 'bg-blue-500 text-white' : 'bg-slate-900 text-white'
+                                            order.status === 'Cancelled' ? 'bg-rose-500 text-white' :
+                                                order.status === 'Preparing' ? 'bg-blue-500 text-white' : 'bg-slate-900 text-white'
                                             }`}>
                                             {order.status}
                                         </span>
