@@ -1,6 +1,7 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import * as menuService from './api/menuService';
+import * as categoryService from './api/categoryService';
 
 export default function MenuPage() {
   const [foodItems, setFoodItems] = useState([]);
@@ -22,8 +23,8 @@ export default function MenuPage() {
 
   const fetchFoodItems = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:5000/menu');
-      setFoodItems(response.data);
+      const data = await menuService.getAllMenuItems();
+      setFoodItems(data);
     } catch (error) {
       console.error("Error fetching menu:", error);
     }
@@ -31,8 +32,8 @@ export default function MenuPage() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:5000/categories');
-      setCategories(response.data);
+      const data = await categoryService.getAllCategories();
+      setCategories(data);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -83,10 +84,10 @@ export default function MenuPage() {
     try {
       if (editingId) {
         // Update existing item
-        await axios.put(`http://127.0.0.1:5000/menu/${editingId}`, newItem);
+        await menuService.updateMenuItem(editingId, newItem);
       } else {
         // Create new item
-        await axios.post('http://127.0.0.1:5000/menu', newItem);
+        await menuService.createMenuItem(newItem);
       }
       fetchFoodItems();
       resetForm();
@@ -98,7 +99,7 @@ export default function MenuPage() {
   const handleDeleteFood = async (id) => {
     if (window.confirm("Delete this item?")) {
       try {
-        await axios.delete(`http://127.0.0.1:5000/menu/${id}`);
+        await menuService.deleteMenuItem(id);
         setFoodItems(foodItems.filter(item => item._id !== id));
       } catch (error) {
         console.error("Error deleting item:", error);

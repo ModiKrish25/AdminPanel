@@ -13,6 +13,11 @@ export const createMenuItem = async (itemData) => {
     return response.data;
 };
 
+export const updateMenuItem = async (id, itemData) => {
+    const response = await axios.put(`${API_URL}/${id}`, itemData);
+    return response.data;
+};
+
 export const deleteMenuItem = async (id) => {
     const response = await axios.delete(`${API_URL}/${id}`);
     return response.data;

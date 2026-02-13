@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import * as categoryService from './api/categoryService';
 
 export default function CategoryPage() {
     const [categories, setCategories] = useState([]);
@@ -15,8 +15,8 @@ export default function CategoryPage() {
 
     const fetchCategories = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:5000/categories');
-            setCategories(response.data);
+            const data = await categoryService.getAllCategories();
+            setCategories(data);
         } catch (error) {
             console.error("Error fetching categories:", error);
         }
@@ -25,7 +25,7 @@ export default function CategoryPage() {
     const handleCreate = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://127.0.0.1:5000/categories', newCategory);
+            await categoryService.createCategory(newCategory);
             fetchCategories();
             setIsModalOpen(false);
             setNewCategory({ name: '' });
@@ -38,7 +38,7 @@ export default function CategoryPage() {
         e.stopPropagation(); // Prevent navigation when clicking delete
         if (window.confirm("Are you sure you want to delete this category?")) {
             try {
-                await axios.delete(`http://127.0.0.1:5000/categories/${id}`);
+                await categoryService.deleteCategory(id);
                 setCategories(categories.filter(cat => cat._id !== id));
             } catch (error) {
                 console.error("Error deleting category:", error);

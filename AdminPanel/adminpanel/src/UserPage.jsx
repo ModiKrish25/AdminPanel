@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import * as userService from './api/userService';
 
 export default function UserPage() {
 
@@ -11,8 +11,8 @@ export default function UserPage() {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:5000/users');
-      setUsers(response.data);
+      const data = await userService.getAllUsers();
+      setUsers(data);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -21,7 +21,7 @@ export default function UserPage() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to remove this user?")) {
       try {
-        await axios.delete(`http://127.0.0.1:5000/users/${id}`);
+        await userService.deleteUser(id);
         setUsers(users.filter(user => user._id !== id));
       } catch (error) {
         console.error("Error deleting user:", error);
